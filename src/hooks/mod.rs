@@ -15,6 +15,7 @@ pub mod check_toml;
 pub mod check_vcs_permalinks;
 pub mod check_xml;
 pub mod check_yaml;
+pub mod detect_aws_credentials;
 pub mod detect_private_key;
 pub mod destroyed_symlinks;
 pub mod end_of_file_fixer;
@@ -24,7 +25,10 @@ pub mod forbid_new_submodules;
 pub mod mixed_line_ending;
 pub mod name_tests_test;
 pub mod no_commit_to_branch;
+pub mod removed;
+pub mod requirements_txt_fixer;
 pub mod shebang_common;
+pub mod sort_simple_yaml;
 pub mod trailing_whitespace_fixer;
 
 /// `(hook id, short description)` pairs, used by `commit-hooks --list`.
@@ -40,6 +44,7 @@ pub const HOOKS: &[(&str, &str)] = &[
     ("check-vcs-permalinks", "ensures that links to vcs websites are permalinks"),
     ("check-xml", "checks xml files for parseable syntax"),
     ("check-yaml", "checks yaml files for parseable syntax"),
+    ("detect-aws-credentials", "detects *your* aws credentials from the aws cli credentials file"),
     ("detect-private-key", "detects the presence of private keys"),
     ("destroyed-symlinks", "detects symlinks which are changed to regular files"),
     ("end-of-file-fixer", "ensures files end with exactly one newline"),
@@ -49,6 +54,9 @@ pub const HOOKS: &[(&str, &str)] = &[
     ("mixed-line-ending", "replaces or checks mixed line ending"),
     ("name-tests-test", "verifies that test files are named correctly"),
     ("no-commit-to-branch", "disallow commits to specific branches"),
+    ("pre-commit-hooks-removed", "informs about removed hooks"),
+    ("requirements-txt-fixer", "sorts entries in requirements.txt"),
+    ("sort-simple-yaml", "sorts simple yaml files which consist only of top-level keys"),
     ("trailing-whitespace", "trims trailing whitespace"),
 ];
 
@@ -69,6 +77,7 @@ pub fn dispatch(id: &str, args: &[String]) -> Option<i32> {
         "check-vcs-permalinks" => Some(check_vcs_permalinks::run(args)),
         "check-xml" => Some(check_xml::run(args)),
         "check-yaml" => Some(check_yaml::run(args)),
+        "detect-aws-credentials" => Some(detect_aws_credentials::run(args)),
         "detect-private-key" => Some(detect_private_key::run(args)),
         "destroyed-symlinks" => Some(destroyed_symlinks::run(args)),
         "end-of-file-fixer" => Some(end_of_file_fixer::run(args)),
@@ -78,6 +87,9 @@ pub fn dispatch(id: &str, args: &[String]) -> Option<i32> {
         "mixed-line-ending" => Some(mixed_line_ending::run(args)),
         "name-tests-test" => Some(name_tests_test::run(args)),
         "no-commit-to-branch" => Some(no_commit_to_branch::run(args)),
+        "pre-commit-hooks-removed" => Some(removed::run(args)),
+        "requirements-txt-fixer" => Some(requirements_txt_fixer::run(args)),
+        "sort-simple-yaml" => Some(sort_simple_yaml::run(args)),
         "trailing-whitespace" => Some(trailing_whitespace_fixer::run(args)),
         _ => None,
     }
