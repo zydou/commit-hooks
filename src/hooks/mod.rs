@@ -5,7 +5,10 @@
 //! hook id onto its implementation; `HOOKS` drives `commit-hooks --list`.
 
 pub mod check_added_large_files;
+pub mod check_ast;
+pub mod check_builtin_literals;
 pub mod check_case_conflict;
+pub mod check_docstring_first;
 pub mod check_executables_have_shebangs;
 pub mod check_json;
 pub mod check_merge_conflict;
@@ -15,9 +18,11 @@ pub mod check_toml;
 pub mod check_vcs_permalinks;
 pub mod check_xml;
 pub mod check_yaml;
+pub mod debug_statements;
 pub mod detect_aws_credentials;
 pub mod detect_private_key;
 pub mod destroyed_symlinks;
+pub mod double_quote_string_fixer;
 pub mod end_of_file_fixer;
 pub mod file_contents_sorter;
 pub mod fix_byte_order_marker;
@@ -35,7 +40,10 @@ pub mod trailing_whitespace_fixer;
 /// `(hook id, short description)` pairs, used by `commit-hooks --list`.
 pub const HOOKS: &[(&str, &str)] = &[
     ("check-added-large-files", "prevents giant files from being committed"),
+    ("check-ast", "checks python files for parseable syntax"),
+    ("check-builtin-literals", "checks for builtin types that can be written as literals"),
     ("check-case-conflict", "checks for files that would conflict in case-insensitive filesystems"),
+    ("check-docstring-first", "checks that a module has a single docstring at the top of the file"),
     ("check-executables-have-shebangs", "ensures that (non-binary) executables have a shebang"),
     ("check-json", "checks json files for parseable syntax"),
     ("check-merge-conflict", "checks for files that contain merge conflict strings"),
@@ -45,9 +53,11 @@ pub const HOOKS: &[(&str, &str)] = &[
     ("check-vcs-permalinks", "ensures that links to vcs websites are permalinks"),
     ("check-xml", "checks xml files for parseable syntax"),
     ("check-yaml", "checks yaml files for parseable syntax"),
+    ("debug-statements", "checks for debugger imports and py37+ breakpoint() calls"),
     ("detect-aws-credentials", "detects *your* aws credentials from the aws cli credentials file"),
     ("detect-private-key", "detects the presence of private keys"),
     ("destroyed-symlinks", "detects symlinks which are changed to regular files"),
+    ("double-quote-string-fixer", "fixes strings that use double quotes to use single quotes"),
     ("end-of-file-fixer", "ensures files end with exactly one newline"),
     ("file-contents-sorter", "sorts the lines in specified files"),
     ("fix-byte-order-marker", "removes utf-8 byte order marker"),
@@ -69,7 +79,10 @@ pub const HOOKS: &[(&str, &str)] = &[
 pub fn dispatch(id: &str, args: &[String]) -> Option<i32> {
     match id {
         "check-added-large-files" => Some(check_added_large_files::run(args)),
+        "check-ast" => Some(check_ast::run(args)),
+        "check-builtin-literals" => Some(check_builtin_literals::run(args)),
         "check-case-conflict" => Some(check_case_conflict::run(args)),
+        "check-docstring-first" => Some(check_docstring_first::run(args)),
         "check-executables-have-shebangs" => Some(check_executables_have_shebangs::run(args)),
         "check-json" => Some(check_json::run(args)),
         "check-merge-conflict" => Some(check_merge_conflict::run(args)),
@@ -79,9 +92,11 @@ pub fn dispatch(id: &str, args: &[String]) -> Option<i32> {
         "check-vcs-permalinks" => Some(check_vcs_permalinks::run(args)),
         "check-xml" => Some(check_xml::run(args)),
         "check-yaml" => Some(check_yaml::run(args)),
+        "debug-statements" => Some(debug_statements::run(args)),
         "detect-aws-credentials" => Some(detect_aws_credentials::run(args)),
         "detect-private-key" => Some(detect_private_key::run(args)),
         "destroyed-symlinks" => Some(destroyed_symlinks::run(args)),
+        "double-quote-string-fixer" => Some(double_quote_string_fixer::run(args)),
         "end-of-file-fixer" => Some(end_of_file_fixer::run(args)),
         "file-contents-sorter" => Some(file_contents_sorter::run(args)),
         "fix-byte-order-marker" => Some(fix_byte_order_marker::run(args)),

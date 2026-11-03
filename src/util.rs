@@ -56,6 +56,38 @@ pub fn zsplit(s: &str) -> Vec<String> {
     if s.is_empty() { Vec::new() } else { s.split('\0').map(str::to_owned).collect() }
 }
 
+/// Build a line-offset table for `src` that can be indexed with a 1-based line
+/// number: `table[1]` is `0`, and `table[n]` is the byte offset at which line
+/// `n` begins. Lines are terminated by `\n`.
+///
+/// This mirrors the "padded so we can index with line number" offset tables the
+/// upstream token-based hooks build from `src.splitlines(True)`.
+pub fn line_start_offsets(src: &str) -> Vec<usize> {
+    let mut table = Vec::with_capacity(src.lines().count() + 2);
+    table.push(0); // sentinel so the table is 1-based
+    let mut offset = 0;
+    for line in src.split('\n') {
+        table.push(offset);
+        offset += line.len() + 1;
+    }
+    table
+}
+
+/// Convert a byte `offset` in `src` into a 1-based `(line, column)` pair.
+///
+/// `column` is the byte distance from the start of the line, matching Python
+/// 3.8+'s `ast`/`tokenize` `(row, col)` tuples, which report UTF-8 byte columns
+/// (so a multi-byte character advances the column by more than one).
+pub fn line_col(src: &str, offset: usize) -> (usize, usize) {
+    let table = line_start_offsets(src);
+    let mut line = table.len() - 1;
+    while line > 1 && table[line] > offset {
+        line -= 1;
+    }
+    let column = offset - table[line];
+    (line, column)
+}
+
 /// Write `contents` to a fresh, uniquely-named temp file and return its path.
 ///
 /// Test-only: because `cargo test` runs tests in parallel threads, each

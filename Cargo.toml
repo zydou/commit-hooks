@@ -23,6 +23,9 @@ serde_json = { version = "1", features = ["preserve_order"] }
 serde_yaml_ng = "0.10"
 toml = { version = "1", default-features = false, features = ["parse", "display", "serde"] }
 quick-xml = "0.42"
+ruff_python_ast = "0.0.20"
+ruff_python_parser = "0.0.20"
+ruff_text_size = "0.0.20"
 
 [profile.release]
 lto = true

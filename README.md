@@ -39,10 +39,38 @@ commit-hooks --list
 
 ## Implemented hooks
 
+All 31 hooks from the upstream `pre-commit-hooks` package:
+
+- `check-added-large-files` — prevent giant files from being committed
+- `check-ast` — check Python files for parseable syntax
+- `check-builtin-literals` — require literal syntax for builtin type calls
+- `check-case-conflict` — check for files that would conflict on case-insensitive filesystems
+- `check-docstring-first` — check that a module docstring appears first
+- `check-executables-have-shebangs` — ensure executables have a shebang
 - `check-json` — validate JSON syntax (rejects duplicate keys)
+- `check-merge-conflict` — check for files that contain merge conflict strings
+- `check-shebang-scripts-are-executable` — ensure shebang scripts are executable
+- `check-symlinks` — check for symlinks which do not point to anything
+- `check-toml` — validate TOML syntax
+- `check-vcs-permalinks` — ensure links to VCS websites are permalinks
+- `check-xml` — validate XML syntax
+- `check-yaml` — validate YAML syntax
+- `debug-statements` — check for debugger imports and `breakpoint()` calls
+- `detect-aws-credentials` — detect AWS credentials from the credentials file
 - `detect-private-key` — detect the presence of private keys
+- `destroyed-symlinks` — detect symlinks changed to regular files
+- `double-quote-string-fixer` — fix strings that use double quotes
 - `end-of-file-fixer` — ensure files end with exactly one newline
+- `file-contents-sorter` — sort the lines in specified files
 - `fix-byte-order-marker` — remove the UTF-8 byte order marker
+- `forbid-new-submodules` — prevent addition of new git submodules
+- `mixed-line-ending` — replace or check mixed line endings
+- `name-tests-test` — verify that test files are named correctly
+- `no-commit-to-branch` — disallow commits to specific branches
+- `pretty-format-json` — set a standard for formatting JSON files
+- `pre-commit-hooks-removed` — inform about removed hooks
+- `requirements-txt-fixer` — sort entries in requirements.txt
+- `sort-simple-yaml` — sort simple top-level-key YAML files
 - `trailing-whitespace` — trim trailing whitespace
 
 ## Building
