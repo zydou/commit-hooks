@@ -31,6 +31,7 @@ pub mod mixed_line_ending;
 pub mod name_tests_test;
 pub mod no_commit_to_branch;
 pub mod pretty_format_json;
+pub mod python_shebang_coding;
 pub mod removed;
 pub mod requirements_txt_fixer;
 pub mod shebang_common;
@@ -66,6 +67,7 @@ pub const HOOKS: &[(&str, &str)] = &[
     ("name-tests-test", "verifies that test files are named correctly"),
     ("no-commit-to-branch", "disallow commits to specific branches"),
     ("pretty-format-json", "sets a standard for formatting json files"),
+    ("python-shebang-coding", "adds shebang and coding to python files"),
     ("pre-commit-hooks-removed", "informs about removed hooks"),
     ("requirements-txt-fixer", "sorts entries in requirements.txt"),
     ("sort-simple-yaml", "sorts simple yaml files which consist only of top-level keys"),
@@ -105,6 +107,7 @@ pub fn dispatch(id: &str, args: &[String]) -> Option<i32> {
         "name-tests-test" => Some(name_tests_test::run(args)),
         "no-commit-to-branch" => Some(no_commit_to_branch::run(args)),
         "pretty-format-json" => Some(pretty_format_json::run(args)),
+        "python-shebang-coding" => Some(python_shebang_coding::run(args)),
         "pre-commit-hooks-removed" => Some(removed::run(args)),
         "requirements-txt-fixer" => Some(requirements_txt_fixer::run(args)),
         "sort-simple-yaml" => Some(sort_simple_yaml::run(args)),

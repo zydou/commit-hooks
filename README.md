@@ -39,7 +39,7 @@ commit-hooks --list
 
 ## Implemented hooks
 
-All 31 hooks from the upstream `pre-commit-hooks` package:
+All 30 hooks from the upstream `pre-commit-hooks` package:
 
 - `check-added-large-files` — prevent giant files from being committed
 - `check-ast` — check Python files for parseable syntax
@@ -72,6 +72,10 @@ All 31 hooks from the upstream `pre-commit-hooks` package:
 - `requirements-txt-fixer` — sort entries in requirements.txt
 - `sort-simple-yaml` — sort simple top-level-key YAML files
 - `trailing-whitespace` — trim trailing whitespace
+
+Plus this extra hook, not present in upstream:
+
+- `python-shebang-coding` — add a shebang and a `coding` declaration to Python files that lack one (`--shebang` sets the shebang, default `#!/usr/bin/env python`)
 
 ## Building
 
