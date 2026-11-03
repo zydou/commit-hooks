@@ -1,0 +1,26 @@
+[package]
+name = "commit-hooks"
+version = "0.1.0"
+edition = "2024"
+description = "Out-of-the-box hooks for pre-commit, re-implemented as a single static Rust binary"
+license = "MIT"
+repository = "https://github.com/zydou/commit-hooks"
+keywords = ["pre-commit", "git", "lint", "hooks"]
+categories = ["command-line-utilities", "development-tools"]
+
+# The binary keeps a stable name so it drops straight into a
+# `.pre-commit-config.yaml` `entry:` and replaces the upstream Python
+# `pre-commit-hooks` package.
+[[bin]]
+name = "commit-hooks"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+serde = "1"
+serde_json = "1"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
