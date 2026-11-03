@@ -39,10 +39,7 @@ mod tests {
     use super::*;
 
     fn run_on(contents: &[u8]) -> (i32, Vec<u8>) {
-        let dir = std::env::temp_dir().join("fix-bom-test");
-        std::fs::create_dir_all(&dir).unwrap();
-        let path = dir.join("f");
-        std::fs::write(&path, contents).unwrap();
+        let path = crate::util::write_temp_file(contents);
         let code = run(&[path.to_string_lossy().into_owned()]);
         let after = std::fs::read(&path).unwrap();
         (code, after)

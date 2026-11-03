@@ -55,3 +55,19 @@ pub fn zsplit(s: &str) -> Vec<String> {
     let s = s.trim_matches('\0');
     if s.is_empty() { Vec::new() } else { s.split('\0').map(str::to_owned).collect() }
 }
+
+/// Write `contents` to a fresh, uniquely-named temp file and return its path.
+///
+/// Test-only: because `cargo test` runs tests in parallel threads, each
+/// invocation must use a distinct path to avoid clobbering a shared fixture.
+#[cfg(test)]
+pub fn write_temp_file(contents: &[u8]) -> std::path::PathBuf {
+    use std::sync::atomic::{AtomicUsize, Ordering};
+    static COUNTER: AtomicUsize = AtomicUsize::new(0);
+    let n = COUNTER.fetch_add(1, Ordering::Relaxed);
+    let dir = std::env::temp_dir().join("commit-hooks-tests");
+    std::fs::create_dir_all(&dir).expect("create temp dir");
+    let path = dir.join(format!("f-{}-{}", std::process::id(), n));
+    std::fs::write(&path, contents).expect("write temp file");
+    path
+}

@@ -87,10 +87,7 @@ mod tests {
 
     #[test]
     fn large_file_is_flagged() {
-        let dir = std::env::temp_dir().join("large-file-test");
-        std::fs::create_dir_all(&dir).unwrap();
-        let path = dir.join("big");
-        std::fs::write(&path, vec![0u8; 2000]).unwrap();
+        let path = crate::util::write_temp_file(&vec![0u8; 2000]);
         let code = run(&[
             "--enforce-all".to_owned(),
             "--maxkb".to_owned(),
@@ -102,10 +99,7 @@ mod tests {
 
     #[test]
     fn small_file_passes() {
-        let dir = std::env::temp_dir().join("large-file-test");
-        std::fs::create_dir_all(&dir).unwrap();
-        let path = dir.join("small");
-        std::fs::write(&path, vec![0u8; 10]).unwrap();
+        let path = crate::util::write_temp_file(&vec![0u8; 10]);
         let code = run(&[
             "--enforce-all".to_owned(),
             "--maxkb".to_owned(),
