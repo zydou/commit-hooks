@@ -1,8 +1,10 @@
-//! commit-hooks — out-of-the-box pre-commit hooks as a single Rust binary.
+//! commit-hooks — out-of-the-box pre-commit hooks as a single self-contained
+//! Rust binary.
 //!
 //! The upstream [`pre-commit-hooks`](https://github.com/pre-commit/pre-commit-hooks)
 //! project ships one Python entry point per hook. This binary replaces that
-//! package with a single statically-linked executable. It is invoked by id:
+//! package with a single executable, built for Linux (gnu and musl) and macOS on
+//! both x86_64 and arm64. It is invoked by id:
 //!
 //! ```text
 //! commit-hooks <hook-id> [hook-args...] [filenames...]

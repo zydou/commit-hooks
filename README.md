@@ -1,17 +1,19 @@
 # commit-hooks
 
 Out-of-the-box [pre-commit](https://pre-commit.com) hooks, re-implemented in
-Rust as a single statically-linked binary. This is a drop-in replacement for the
+Rust as a single self-contained binary. This is a drop-in replacement for the
 reference [`pre-commit-hooks`](https://github.com/pre-commit/pre-commit-hooks)
-package: instead of needing a Python interpreter, you compile one `commit-hooks`
+package: instead of needing a Python interpreter, you drop in one `commit-hooks`
 executable and reference it directly from your `.pre-commit-config.yaml`.
 
 ## Why
 
 The upstream hooks are Python and require a working Python interpreter at
-pre-commit time. This project compiles to a single
-`x86_64-unknown-linux-musl` binary with no runtime dependencies, so it starts
-instantly and can be committed/installed anywhere without a Python toolchain.
+pre-commit time. This project compiles to a single self-contained `commit-hooks`
+binary with no runtime dependencies, so it starts instantly and can be
+committed/installed anywhere without a Python toolchain. Releases ship
+pre-built binaries for Linux (gnu and musl) and macOS, on both x86_64 and
+arm64 — see [Building](#building).
 
 ## Usage
 
@@ -79,11 +81,31 @@ Plus this extra hook, not present in upstream:
 
 ## Building
 
+CI builds a release binary for every supported target and attaches it to a
+GitHub Release. Every push publishes to the rolling `nightly` release; pushing a
+`v*` tag releases to that tag. Grab the archive for your target:
+
+| Target | Platform |
+| --- | --- |
+| `x86_64-unknown-linux-gnu` | Linux, x86_64, glibc |
+| `x86_64-unknown-linux-musl` | Linux, x86_64, statically linked |
+| `aarch64-unknown-linux-gnu` | Linux, arm64, glibc |
+| `aarch64-unknown-linux-musl` | Linux, arm64, statically linked |
+| `x86_64-apple-darwin` | macOS, Intel |
+| `aarch64-apple-darwin` | macOS, Apple silicon |
+
+Each archive is named `commit-hooks-<target>.tar.xz` and contains the
+`commit-hooks` binary. Linux targets are cross-compiled with
+[cross-rs](https://github.com/cross-rs/cross) from a fixed toolchain image;
+the macOS targets build natively on matching runners.
+
+To build from source instead:
+
 ```bash
 # native
 cargo build --release
 
-# static musl binary
+# a specific target (Linux targets cross-compile via cross-rs)
 cross build --release --target x86_64-unknown-linux-musl
 ```
 

@@ -1,8 +1,8 @@
 [package]
 name = "commit-hooks"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2024"
-description = "Out-of-the-box hooks for pre-commit, re-implemented as a single static Rust binary"
+description = "Out-of-the-box hooks for pre-commit, re-implemented as a single self-contained Rust binary"
 license = "MIT"
 repository = "https://github.com/zydou/commit-hooks"
 keywords = ["pre-commit", "git", "lint", "hooks"]
